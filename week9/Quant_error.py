@@ -6,7 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--stu_id', required=True, default=20232108)
-args = parser.parse_args()
+args = parser.parse_args(['--stu_id', '20190039'])
 
 last_digit = int(args.stu_id[-1]) 
 
@@ -20,21 +20,17 @@ def quantization_error ( BitWidth ) :
     y = np.sin(x)
     data = y 
     print("quantization in : ", BitWidth, "bit")
-    ################WRITE YOUR OWN CODE##################
-    # 1. make scale fator for quantization 
-    #Scale_factor = (max(data)-min(data)) / (expression range)
-    #
-    # 2. quantized data using scale factor 
-    # Quantized value = round(data/Scale_factor) * Scale_factor
-    #
-    # 3. find error caseud by quantization  
-    # Error = SUM( |Quantized_value -data| ) 
-    #  
-    #####################################################
-
+    
+    Scale_factor=(max(data)-min(data)) / (2**(BitWidth-1))
+    Quantized_value = np.round(data/Scale_factor) * Scale_factor
+    Error = sum( abs(Quantized_value -data) )
+    
+    
     ## ploting sine and cosine curve using matplotlb
     print('Error for {0:1d} bit quantization {1:.2f}'.format(last_digit, Error))
+    
     y_q = Quantized_value
+    
     plt.plot(x, y, x, y_q)
     plt.show()
 
